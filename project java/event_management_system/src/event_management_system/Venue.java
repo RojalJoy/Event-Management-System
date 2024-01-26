@@ -99,16 +99,6 @@ public class Venue extends JFrame {
 
         add(sb);
 
-        // Additional button for future functionality
-        b1 = new JButton("Book Venue");
-        b1.setBounds(200, 450, 150, 30);
-        b1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new addevent();
-                dispose();
-            }
-        });
-        add(b1);
 
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
