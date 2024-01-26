@@ -11,9 +11,9 @@ public class Event_Management_System extends JFrame {
         setBounds(50,50,1000, 700);
         
       
-        ImageIcon i1 = new ImageIcon("C:/Users/Himanshu Agarwal/Documents/NetBeansProjects/Event_Management_System/src/event_management_system/images/Event-Management.jpg");
+        ImageIcon i1 = new ImageIcon("event_management_system/src/event_management_system/Dashboard.jpg");
         JLabel l1 = new JLabel(i1);
-        l1.setBounds(0,0,1600,768);
+        l1.setBounds(0,0,1000,768);
         add(l1);
         
         JButton b1 = new JButton("Customer");
