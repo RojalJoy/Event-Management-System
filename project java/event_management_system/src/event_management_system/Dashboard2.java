@@ -13,21 +13,17 @@ import javax.swing.JMenuItem;
 
 public class Dashboard2 extends JFrame {
     Dashboard2(){
-        setSize(1000,1000);
-        ImageIcon i1 = new ImageIcon("event_management_system/src/event_management_system/image food.jpg");
+        setSize(1000,700);
 
-	JLabel NewLabel = new JLabel(i1);
-
-        add(NewLabel);
         
         JMenuBar menuBar = new JMenuBar();
 	setJMenuBar(menuBar);
-        JMenu jm1 = new JMenu("Reception");
+        JMenu jm1 = new JMenu("EVENTS");
         jm1.setForeground(Color.RED);
 	menuBar.add(jm1);
 
         
-        JMenuItem a1 = new JMenuItem("Add an event");
+        JMenuItem a1 = new JMenuItem("Book an event");
 	jm1.add(a1);
         a1.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae){
@@ -40,12 +36,20 @@ public class Dashboard2 extends JFrame {
             }
         });
             
-        JMenuItem a2 = new JMenuItem("Choose your menu");
+        JMenuItem a2 = new JMenuItem("Caterers");
+        a2.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    new viewdetails("catering").setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        );
 	jm1.add(a2);
-        JMenuItem a3 = new JMenuItem("Update Profile details");
-	jm1.add(a3);
-        JMenuItem a4 = new JMenuItem("Edit an event");
-	jm1.add(a4);
+        
+        
                 JMenuItem b2 = new JMenuItem("Back");
 	b2.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae){
@@ -62,11 +66,53 @@ public class Dashboard2 extends JFrame {
 	
 	jm1.add(b2);
         
+    JMenu eventManagementMenu = new JMenu("SERVICES");
+    eventManagementMenu.setForeground(Color.BLUE);
+    menuBar.add(eventManagementMenu);
+
+    JMenuItem venueMenuItem = new JMenuItem("Venue");
+    eventManagementMenu.add(venueMenuItem);
+    venueMenuItem.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent ae) {
+            try {
+                new viewdetails("venue").setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    });
+
+    JMenuItem photographerMenuItem = new JMenuItem("Photographer");
+    eventManagementMenu.add(photographerMenuItem);
+    photographerMenuItem.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent ae) {
+            try {
+                new viewdetails("photographer").setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    });
+
+    JMenuItem catererMenuItem = new JMenuItem("Caterer");
+    eventManagementMenu.add(catererMenuItem);
+    catererMenuItem.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent ae) {
+            try {
+                new viewdetails("catering").setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    });
         
         
-        
-   setLayout(null);
-        
+
+        setLayout(null);
+        ImageIcon background = new ImageIcon("event_management_system/src/event_management_system/Dashboard.jpg");
+        JLabel backgroundLabel = new JLabel(background);
+        backgroundLabel.setBounds(0, 0, 1000, 700);
+        add(backgroundLabel);
         
         setVisible(true);
         getContentPane().setPreferredSize(new Dimension(100, 100));
