@@ -7,20 +7,17 @@ import java.awt.event.*;
 public class Dashboard extends JFrame {
 
     Dashboard() {
-        super("Event MANAGEMENT SYSTEM");
+        super("EVENT MANAGEMENT SYSTEM");
         setBounds(50,50,1000, 700);
 
-        ImageIcon i1 = new ImageIcon("event_management_system/src/event_management_system/image food.jpg");
+        ImageIcon i1 = new ImageIcon("event_management_system/src/event_management_system/Dashboard.jpg");
 
         JLabel backgroundLabel = new JLabel(i1);
         backgroundLabel.setBounds(0, 0, 1000, 700);
+        backgroundLabel.setSize(1000,700);
         add(backgroundLabel);
 
-        JLabel eventManagementLabel = new JLabel("Event Management System.");
-        eventManagementLabel.setForeground(Color.WHITE);
-        eventManagementLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
-        eventManagementLabel.setBounds(200, 60, 500, 50);
-        backgroundLabel.add(eventManagementLabel);
+       
 
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -29,8 +26,14 @@ public class Dashboard extends JFrame {
         receptionMenu.setForeground(Color.RED);
         menuBar.add(receptionMenu);
 
-        JMenuItem adminMenuItem = new JMenuItem("Admin");
+        JMenuItem adminMenuItem = new JMenuItem("Manage Events");
         receptionMenu.add(adminMenuItem);
+        adminMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                new showEvent();
+
+            }
+        });
 
         JMenuItem addVenueMenuItem = new JMenuItem("Add Venue");
         receptionMenu.add(addVenueMenuItem);
@@ -121,7 +124,7 @@ public class Dashboard extends JFrame {
         catererMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    new viewdetails("caterer").setVisible(true);
+                    new viewdetails("catering").setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
