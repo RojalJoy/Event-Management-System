@@ -14,15 +14,21 @@ import javax.imageio.ImageIO;
 
 public class Photographer extends JFrame {
     private JPanel contentPane;
+    private JLabel backgroundLabel;
 
     public Photographer(String selectedName) {
         setTitle("Photographer Details");
         setBounds(50, 50, 800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+      
+            
+        
         contentPane = new JPanel();
         setContentPane(contentPane);
         contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+
+        
 
         conn c = new conn();
         JScrollPane sb = new JScrollPane();
@@ -30,6 +36,7 @@ public class Photographer extends JFrame {
         JButton backButton = new JButton("Back");
         backButton.setBounds(50, 450, 150, 30);
 
+        
         String q = "select * from photographer where name ='" + selectedName + "'";
         try {
             ResultSet rs = c.s.executeQuery(q);
@@ -49,17 +56,7 @@ public class Photographer extends JFrame {
             Logger.getLogger(Photographer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        JButton bookButton = new JButton("Book Photographer");
-        bookButton.setBounds(220, 450, 200, 30);
-        bookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                new addevent(); 
-                dispose(); 
-            }
-        });
-        contentPane.add(bookButton);
+   
 
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -68,6 +65,10 @@ public class Photographer extends JFrame {
             }
         });
         contentPane.add(backButton);
+        ImageIcon background = new ImageIcon("event_management_system/src/event_management_system/Photographer.jpg");
+        JLabel backgroundLabel = new JLabel(background);
+        backgroundLabel.setBounds(0, 0, 1000, 700);
+        contentPane.add(backgroundLabel); 
         setSize(800, 600);
         setVisible(true);
     }
