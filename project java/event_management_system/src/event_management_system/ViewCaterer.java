@@ -9,7 +9,18 @@ import java.sql.*;
 public class ViewCaterer extends JFrame {
     private JPanel contentPane;
 
-    ViewCaterer() {
+    public ViewCaterer(String selectedName) {
+        initializeUI();
+        populateCaterers(selectedName);
+        ImageIcon background = new ImageIcon("event_management_system/src/event_management_system/caterer.jpg");
+        JLabel backgroundLabel = new JLabel(background);
+        backgroundLabel.setBounds(0, 0, 1000, 700);
+        contentPane.add(backgroundLabel); // Add the background label at index 0
+
+        setVisible(true);
+    }
+
+    private void initializeUI() {
         setTitle("Caterer Details");
         setBounds(50, 50, 1000, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -17,10 +28,12 @@ public class ViewCaterer extends JFrame {
         contentPane = new JPanel();
         setContentPane(contentPane);
         contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+    }
 
+    private void populateCaterers(String selectedName) {
         try {
             conn c = new conn();
-            String query = "SELECT * FROM catering";
+            String query = "SELECT * FROM catering WHERE caterer = '" + selectedName + "'";
             ResultSet rs = c.s.executeQuery(query);
 
             while (rs.next()) {
@@ -29,7 +42,6 @@ public class ViewCaterer extends JFrame {
                 String menu = rs.getString("menu");
                 double budget = rs.getDouble("budget");
 
-                // Create a block for each caterer
                 JPanel catererPanel = createCatererPanel(catererId, catererName, menu, budget);
                 contentPane.add(catererPanel);
             }
@@ -38,24 +50,15 @@ public class ViewCaterer extends JFrame {
             e.printStackTrace();
         }
 
-        // Add Book Event button
-        JButton bookEventButton = new JButton("Book Event");
-        bookEventButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new addevent();
-                dispose();
-            }
-        });
-        contentPane.add(bookEventButton);
+   
 
         // Add Back button
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                dispose(); 
+                new viewdetails("catering"); 
+                dispose();
             }
         });
         contentPane.add(backButton);
@@ -77,6 +80,7 @@ public class ViewCaterer extends JFrame {
         catererPanel.add(menuLabel);
         catererPanel.add(budgetLabel);
 
+        
         catererPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         catererPanel.setPreferredSize(new Dimension(200, 75));
 
@@ -84,6 +88,6 @@ public class ViewCaterer extends JFrame {
     }
 
     public static void main(String[] args) {
-        new ViewCaterer();
+        new ViewCaterer(""); // Pass the desired name here
     }
 }
