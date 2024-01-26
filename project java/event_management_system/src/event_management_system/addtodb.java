@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,20 +38,20 @@ public class addtodb extends JFrame {
 
         for (int i = 0; i < s.length; i++) {
             JLabel label = new JLabel(s[i]);
-            label.setForeground(new Color(25, 25, 112));
+            label.setForeground(new Color(0,0,0));
             label.setFont(new Font("Tahoma", Font.BOLD, 14));
-            label.setBounds(20, 70 + j, 102, 22);
+            label.setBounds(300, 70 + j, 102, 22);
             contentPane.add(label);
 
             JTextField textField = new JTextField();
-            textField.setBounds(130, 70 + j, 156, 20);
+            textField.setBounds(430, 70 + j, 156, 20);
             contentPane.add(textField);
             j = j + 40;
             t.add(textField);
         }
 
         b1 = new JButton("Add");
-        b1.setBounds(20, 70 + j, 111, 33);
+        b1.setBounds(300, 70 + j, 100, 33);
         b1.setBackground(Color.BLACK);
         b1.setForeground(Color.WHITE);
         contentPane.add(b1);
@@ -58,6 +60,11 @@ public class addtodb extends JFrame {
                 String q = null;
                 for (int i = 0; i < s.length; i++) {
                     v.add(t.get(i).getText());
+                }
+                if (!isValidPhoneNumber(v.get(2))) {
+                    JOptionPane.showMessageDialog(null, "Invalid phone number format");
+                    reload();
+                    return; // Exit the method if phone number is invalid
                 }
 
                 if ("venue".equals(a)) {
@@ -74,7 +81,9 @@ public class addtodb extends JFrame {
                 try {
                     conn c = new conn();
                     c.s.executeUpdate(q);
+                    
                     JOptionPane.showMessageDialog(null, a + " Successfully Added");
+                    new Dashboard().setVisible(true);
                     setVisible(false);
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error");
@@ -84,7 +93,7 @@ public class addtodb extends JFrame {
         });
 
         b2 = new JButton("Back");
-        b2.setBounds(150, 70 + j, 111, 33);
+        b2.setBounds(450, 70 + j, 111, 33);
         b2.setBackground(Color.BLACK);
         b2.setForeground(Color.WHITE);
         contentPane.add(b2);
@@ -96,9 +105,24 @@ public class addtodb extends JFrame {
             }
         });
 
+          ImageIcon background = new ImageIcon("event_management_system/src/event_management_system/addtodb.jpg");
+        JLabel backgroundLabel = new JLabel(background);
+        backgroundLabel.setBounds(0, 0, 1000, 700);
+        contentPane.add(backgroundLabel);
         contentPane.setBackground(Color.WHITE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        // Assuming a valid phone number is 10 digits
+        // Modify the regular expression based on your specific requirements
+        String regex = "\\d{10}";
+        return phoneNumber.matches(regex);
+    }
+    private void reload() {
+        setVisible(false);
+        Dashboard newEvent = new Dashboard();
+        newEvent.setVisible(true);
     }
 
     public static void main(String args[]) {
