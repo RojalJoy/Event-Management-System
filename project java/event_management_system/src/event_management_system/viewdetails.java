@@ -1,97 +1,93 @@
 package event_management_system;
 
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.sql.*;
 
-public class viewdetails extends JFrame {
+public class ViewCaterer extends JFrame {
     private JPanel contentPane;
 
-    viewdetails(String tableName) {
-        setBounds(450, 200, 1000, 450);
-        contentPane = new JPanel();
-        setContentPane(contentPane);
-        contentPane.setLayout(null);
+    public ViewCaterer(String selectedName) {
+        initializeUI();
+        populateCaterers(selectedName);
+        ImageIcon background = new ImageIcon("event_management_system/src/event_management_system/caterer.jpg");
+        JLabel backgroundLabel = new JLabel(background);
+        backgroundLabel.setBounds(0, 0, 1000, 700);
+        contentPane.add(backgroundLabel); // Add the background label at index 0
 
-        conn c = new conn();
-        try {
-            String query = "";
-            switch (tableName) {
-                case "venue":
-                    query = "SELECT Name FROM venue LIMIT 100";
-                    break;
-                case "photographer":
-                    query = "SELECT name FROM photographer LIMIT 100";
-                    break;
-                case "catering":
-                    query = "SELECT caterer FROM catering LIMIT 100";
-                    break;
-                default:
-                    break;
-            }
-
-            ArrayList<String> detailsList = new ArrayList<>();
-            ResultSet rs = c.s.executeQuery(query);
-            int j = 0;
-
-            while (rs.next()) {
-                String name = rs.getString(1);
-                System.out.println(name);
-
-                JButton button = new JButton(name);
-                button.setBackground(Color.BLACK);
-                button.setForeground(Color.WHITE);
-                button.setBounds(10, 10 + j, 100, 30);
-                contentPane.add(button);
-
-                final String selectedName = name;
-                button.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent ae) {
-                        try {
-                            setVisible(false);
-                            switch (tableName) {
-                                case "venue":
-                                    Venue venue = new Venue(selectedName);
-                                    venue.setVisible(true);
-                                    break;
-                                case "photographer":
-
-                                Photographer photographer = new Photographer(selectedName);
-                                    photographer.setVisible(true);
-                                    break;
-                                case "catering":
-                                    ViewCaterer caterer = new ViewCaterer();
-                                    caterer.setVisible(true);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-                j = j + 40;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Venue.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        contentPane.setBackground(Color.WHITE);
         setVisible(true);
-        setSize(436, 900); 
     }
 
-    public static void main(String args[]) {
-        viewdetails v = new viewdetails("");
+    private void initializeUI() {
+        setTitle("Caterer Details");
+        setBounds(50, 50, 1000, 700);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        contentPane = new JPanel();
+        setContentPane(contentPane);
+        contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+    }
+
+    private void populateCaterers(String selectedName) {
+        try {
+            conn c = new conn();
+            String query = "SELECT * FROM catering WHERE caterer = '" + selectedName + "'";
+            ResultSet rs = c.s.executeQuery(query);
+
+            while (rs.next()) {
+                int catererId = rs.getInt("id");
+                String catererName = rs.getString("caterer");
+                String menu = rs.getString("menu");
+                double budget = rs.getDouble("budget");
+
+                JPanel catererPanel = createCatererPanel(catererId, catererName, menu, budget);
+                contentPane.add(catererPanel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+   
+
+        // Add Back button
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new viewdetails("catering"); 
+                dispose();
+            }
+        });
+        contentPane.add(backButton);
+
+        setVisible(true);
+    }
+
+    private JPanel createCatererPanel(int catererId, String catererName, String menu, double budget) {
+        JPanel catererPanel = new JPanel();
+        catererPanel.setLayout(new BoxLayout(catererPanel, BoxLayout.Y_AXIS));
+
+        JLabel idLabel = new JLabel("Caterer ID: " + catererId);
+        JLabel nameLabel = new JLabel("Caterer Name: " + catererName);
+        JLabel menuLabel = new JLabel("Menu: " + menu);
+        JLabel budgetLabel = new JLabel("Budget: $" + budget);
+
+        catererPanel.add(idLabel);
+        catererPanel.add(nameLabel);
+        catererPanel.add(menuLabel);
+        catererPanel.add(budgetLabel);
+
+        
+        catererPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        catererPanel.setPreferredSize(new Dimension(200, 75));
+
+        return catererPanel;
+    }
+
+    public static void main(String[] args) {
+        new ViewCaterer(""); // Pass the desired name here
     }
 }
